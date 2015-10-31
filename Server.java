@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 public class Server {
 
-	public static int PORT_NUMBER = 6789;
-	public static String NAME = "SERVER - ";
+	public static final int PORT_NUMBER = 6789;
+	public static final String NAME = "SERVER - ";
 
 	private ServerSocket server;
 	private ServerGUI graphics;

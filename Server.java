@@ -49,12 +49,22 @@ public class Server {
 	}
 
 	private void downloadHistory(final int compression) {
-
 		switch (compression) {
 		case 0:
-
+			try {
+				Compressor.writeWords(messages.toString(), "chat-history.txt");
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		case 1:
+			final ArrayList<Integer> compressed = Compressor
+					.compress(messages.toString());
+			try {
+				Compressor.writeCompressed(compressed, "chat-history.txt");
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;

@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -32,12 +33,13 @@ public class ServerGUI extends JFrame {
 
 	private JTextField userText;
 	private JTextArea chatWindow;
-	private JButton fileLoad;
-	private JButton messageHistory;
+	private JButton fileLoad, messageHistory;
 	private JPanel controlPanel;
-	private ActionListener attachUpdate;
+	private ActionListener attachUpdate, messageUpdate;
 
-	public ServerGUI(final ActionListener textUpdate, final ActionListener attachUpdate) {
+	public ServerGUI(final ActionListener textUpdate,
+			final ActionListener attachUpdate,
+			final ActionListener messageUpdate) {
 		super("Messaging App (Server)!");
 
 		this.setGUI();
@@ -45,6 +47,7 @@ public class ServerGUI extends JFrame {
 		this.attachUpdate = attachUpdate;
 		userText.addActionListener(textUpdate);
 		fileLoad.addActionListener(e -> this.chooseFile());
+		messageHistory.addActionListener(e -> this.sendHistory());
 	}
 
 	private void setGUI() {
@@ -59,15 +62,40 @@ public class ServerGUI extends JFrame {
 		fileLoad = new JButton("Attach");
 		messageHistory = new JButton("History");
 
+		final JPanel buttonPanel = new JPanel(
+				new FlowLayout(FlowLayout.LEFT, 0, 0));
+		buttonPanel.add(fileLoad);
+		buttonPanel.add(messageHistory);
+
 		controlPanel = new JPanel(new BorderLayout());
-		controlPanel.add(fileLoad, BorderLayout.WEST);
-		controlPanel.add(messageHistory, BorderLayout.WEST);
+		controlPanel.add(buttonPanel, BorderLayout.WEST);
 		controlPanel.add(userText, BorderLayout.CENTER);
 
 		this.add(controlPanel, BorderLayout.SOUTH);
 		this.add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 		this.setSize(350, 500);
 		this.setLocation(100, 100);
+	}
+
+	private void sendHistory() {
+		final String[] choices = { "Compressed", "Uncompressed" };
+		final String choice = (String) JOptionPane.showInputDialog(null,
+				"How do you want to download the chat history?", "",
+				JOptionPane.PLAIN_MESSAGE, null, choices, null);
+
+		switch (choice) {
+		case "Compressed":
+			messageUpdate.actionPerformed(new ActionEvent(null, 0, null));
+			break;
+		case "Uncompressed":
+			messageUpdate.actionPerformed(new ActionEvent(null, 1, null));
+			break;
+		default:
+			break;
+		}
+
+		JOptionPane.showMessageDialog(null,
+				"Your chat history should have downloaded");
 	}
 
 	private void chooseFile() {

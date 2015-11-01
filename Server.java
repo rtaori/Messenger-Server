@@ -17,7 +17,8 @@ public class Server {
 	public Server() {
 		graphics = new ServerGUI(e -> this.sendMessage(
 				NAME + e.getActionCommand(), 0),
-				e -> this.sendMessage(e.getSource(), 0));
+				e -> this.sendMessage(e.getSource(), 0),
+				e -> this.downloadHistory(e.getID()));
 		graphics.makeVisible();
 
 		connections = new ArrayList<ServerThread>();
@@ -45,6 +46,19 @@ public class Server {
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
+	}
+
+	private void downloadHistory(final int compression) {
+
+		switch (compression) {
+		case 0:
+
+			break;
+		case 1:
+			break;
+		default:
+			break;
+		}
 	}
 
 	private void sendMessage(final String message, final int id) {

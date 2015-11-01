@@ -18,7 +18,7 @@ public class Server {
 		graphics = new ServerGUI(e -> this.sendMessage(
 				NAME + e.getActionCommand(), 0),
 				e -> this.sendMessage(e.getSource(), 0),
-				e -> this.downloadHistory(e.getID()));
+				e -> this.downloadHistory((boolean) e.getSource()));
 		graphics.makeVisible();
 
 		connections = new ArrayList<ServerThread>();
@@ -48,16 +48,8 @@ public class Server {
 			}
 	}
 
-	private void downloadHistory(final int compression) {
-		switch (compression) {
-		case 0:
-			try {
-				Compressor.writeWords(messages.toString(), "chat-history.txt");
-			} catch (final IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case 1:
+	private void downloadHistory(final boolean compression) {
+		if (compression) {
 			final ArrayList<Integer> compressed = Compressor
 					.compress(messages.toString());
 			try {
@@ -65,10 +57,13 @@ public class Server {
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
-			break;
-		default:
-			break;
-		}
+		} else
+			try {
+				Compressor.writeWords(messages.toString(), "chat-history.txt");
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+
 	}
 
 	private void sendMessage(final String message, final int id) {

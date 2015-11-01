@@ -45,6 +45,7 @@ public class ServerGUI extends JFrame {
 		this.setGUI();
 
 		this.attachUpdate = attachUpdate;
+		this.messageUpdate = messageUpdate;
 		userText.addActionListener(textUpdate);
 		fileLoad.addActionListener(e -> this.chooseFile());
 		messageHistory.addActionListener(e -> this.sendHistory());
@@ -85,10 +86,10 @@ public class ServerGUI extends JFrame {
 
 		switch (choice) {
 		case "Compressed":
-			messageUpdate.actionPerformed(new ActionEvent(null, 0, null));
+			messageUpdate.actionPerformed(new ActionEvent(true, 0, null));
 			break;
 		case "Uncompressed":
-			messageUpdate.actionPerformed(new ActionEvent(null, 1, null));
+			messageUpdate.actionPerformed(new ActionEvent(false, 0, null));
 			break;
 		default:
 			break;

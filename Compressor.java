@@ -67,7 +67,7 @@ public class Compressor {
 		final PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new FileWriter(file)));
 		for (final int x : compressed)
-			writer.println(x);
+			writer.print(x + " ");
 		writer.close();
 	}
 

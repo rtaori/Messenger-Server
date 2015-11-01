@@ -12,6 +12,7 @@ public class Server {
 	private ServerSocket server;
 	private ServerGUI graphics;
 	private ArrayList<ServerThread> connections;
+	private StringBuilder messages;
 
 	public Server() {
 		graphics = new ServerGUI(e -> this.sendMessage(
@@ -26,6 +27,8 @@ public class Server {
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
+
+		messages = new StringBuilder();
 	}
 
 	public void run() {
@@ -49,6 +52,7 @@ public class Server {
 		if (index < 0 || message.substring(index).length() == 2)
 			return;
 		graphics.showMessage(message);
+		messages.append(message + "\n");
 		if (id == 0)
 			graphics.resetText();
 		for (final ServerThread serv : connections)

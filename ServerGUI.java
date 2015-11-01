@@ -33,15 +33,23 @@ public class ServerGUI extends JFrame {
 	private JTextField userText;
 	private JTextArea chatWindow;
 	private JButton fileLoad;
+	private JButton messageHistory;
 	private JPanel controlPanel;
 	private ActionListener attachUpdate;
 
 	public ServerGUI(final ActionListener textUpdate, final ActionListener attachUpdate) {
 		super("Messaging App (Server)!");
 
+		this.setGUI();
+
+		this.attachUpdate = attachUpdate;
+		userText.addActionListener(textUpdate);
+		fileLoad.addActionListener(e -> this.chooseFile());
+	}
+
+	private void setGUI() {
 		userText = new JTextField();
 		userText.setEditable(false);
-		userText.addActionListener(textUpdate);
 		userText.setText("");
 		userText.setCaretPosition(userText.getDocument().getLength());
 
@@ -49,12 +57,11 @@ public class ServerGUI extends JFrame {
 		chatWindow.setEditable(false);
 
 		fileLoad = new JButton("Attach");
-		fileLoad.addActionListener(e -> this.chooseFile());
-
-		this.attachUpdate = attachUpdate;
+		messageHistory = new JButton("History");
 
 		controlPanel = new JPanel(new BorderLayout());
 		controlPanel.add(fileLoad, BorderLayout.WEST);
+		controlPanel.add(messageHistory, BorderLayout.WEST);
 		controlPanel.add(userText, BorderLayout.CENTER);
 
 		this.add(controlPanel, BorderLayout.SOUTH);
